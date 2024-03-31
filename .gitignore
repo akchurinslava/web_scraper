@@ -3,3 +3,4 @@
 /venv
 /driver
 .git
+/__pycache__
