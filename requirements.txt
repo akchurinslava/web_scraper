@@ -18,3 +18,4 @@ wsproto>=1.2.0
 lxml>=5.1.0
 python-dotenv>=1.0.1
 isort>=5.13.2
+SQLAlchemy>=2.0.29
