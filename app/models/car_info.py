@@ -2,30 +2,33 @@ import datetime
 
 from sqlalchemy import Column, DateTime, Integer, String
 
+from app.database import Base
 
-class CarInfo():
+
+class CarInfo(Base):
     __tablename__ = "car_info"
 
-    make = Column(String, index=True, nullable=True)
-    model = Column(String, index=True, nullable=True)
-    spec_name = Column(String, nullable=True)
-    type = Column(String, index=True, nullable=True)
-    body_type = Column(String, index=True, nullable=True)
+    id = Column(Integer, primary_key=True)
+    make = Column(String, index=True)
+    model = Column(String, index=True)
+    spec_name = Column(String)
+    type = Column(String, index=True)
+    body_type = Column(String, index=True)
     # Research
-    reg = Column(DateTime, unique=True, nullable=True)
-    engine = Column(String, nullable=True)
-    fuel = Column(String, index=True, nullable=True)
-    mileage = Column(Integer, nullable=True)
-    drive = Column(String, index=True, nullable=True)
-    seats = Column(String, index=True, nullable=True)
-    doors = Column(String, index=True, nullable=True)
-    transmission = Column(String, index=True, nullable=True)
-    color = Column(String, index=True, nullable=True)
-    reg_number = Column(String, unique=True, nullable=True)
-    vin = Column(String, unique=True, nullable=True)
-    price = Column(Integer, nullable=True)
-    bargain_price = Column(Integer, nullable=True)
-    export_price = Column(Integer, nullable=True)
-    vat = Column(Integer, index=True, nullable=True)
-    link = Column(String, unique=True, nullable=True)
-    created_at = Column(DateTime(timezone=True), default=datetime.date.today().strftime('%Y-%m-%d'))
+    reg = Column(String)
+    engine = Column(String)
+    fuel = Column(String, index=True)
+    mileage = Column(Integer)
+    drive = Column(String, index=True)
+    seats = Column(String, index=True)
+    doors = Column(String, index=True)
+    transmission = Column(String, index=True)
+    color = Column(String, index=True)
+    reg_number = Column(String)
+    vin = Column(String)
+    price = Column(Integer)
+    bargain_price = Column(Integer)
+    export_price = Column(Integer)
+    vat = Column(Integer, index=True)
+    link = Column(String, unique=True)
+    created_at = Column(DateTime(timezone=True), default=datetime.datetime.now)

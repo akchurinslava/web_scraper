@@ -8,6 +8,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
+from app.database import session
+from app.models import CarInfo
 from makes import makes, types
 
 
@@ -61,7 +63,7 @@ class Auto24Parser:
         #         f'https://eng.auto24.ee/kasutatud/nimekiri.php?bn=2&a={types.get('passenger_suv')}&af={page_count}'
         #     )
         while True:
-            base_url = f'https://eng.auto24.ee/kasutatud/nimekiri.php?bn=2&a={types.get('passenger_suv')}&b={makes.get(self.input_car_make)}&af=100&ak={page_count}'
+            base_url = f'https://eng.auto24.ee/kasutatud/nimekiri.php?bn=2&a={types.get('passenger_suv')}&b={makes.get(self.input_car_make)}&af=20&ak={page_count}'
             self.driver.get(base_url)
             soup = BeautifulSoup(self.driver.page_source, "lxml")
             div = soup.find("div", id="usedVehiclesSearchResult-flex")
@@ -78,7 +80,7 @@ class Auto24Parser:
                         self.car_info = {}
                         self.driver.get(car_url)
                         h1 = soup_car.find("h1", class_="commonSubtitle").text.split()
-                        self.car_info['make'], self.car_info['model'], self.car_info['spec_name'] = h1[0], h1[1], h1[2:]
+                        self.car_info['make'], self.car_info['model'], self.car_info['spec_name'] = h1[0], h1[1], ' '.join(h1[2:])
                         for tr in table.find_all("tr"):
                             td_field = tr.find("td", class_="field")
                             span_value = td_field.find("span", class_="value")
@@ -99,25 +101,15 @@ class Auto24Parser:
                                         vat_value = td_field.find("span", class_="vat-value").text
                                         vat_value = re.findall(r'\d+', vat_value)
                                         vat_value = int(''.join(vat_value))
-                                elif tr_class in ['field-month_and_year']:
-                                    month_year = span_value.text.split('/')
-                                    if len(month_year) ==2:
-                                        month, year = span_value.text.split('/')
-                                    else:
-                                        year = span_value.text
-                                        month = 1
-                                    month, year = int(month), int(year)
-                                    clean_month_year = datetime.date(year, month, 1).strftime('%Y-%m-%d')
-                                    self.car_info[self.mapping[tr_class]] = clean_month_year
                                 else:
                                     self.car_info[self.mapping[tr_class]] = span_value.text
                         self.car_info['vat'] = vat_value
                         self.car_info['link'] = car_url
-                        self.car_info['created_at'] = datetime.date.today().strftime('%Y-%m-%d')
                         self.cars_list.append(self.car_info)
                         # print(len(self.cars_list))
                         # print(car_url)
                         # print(base_url)
+                        # print(self.cars_list)
                 except Exception as e:
                     print(f'An exception occured during application was running:\n{e}')
             else:
@@ -128,7 +120,7 @@ class Auto24Parser:
                 if next_page.get_attribute("class") == "btn btn-right disabled":
                     break
             except:
-                if input_page_amount - 100 == page_count:
+                if input_page_amount == page_count:
                     break
 
     def get_cars(self):
@@ -151,8 +143,13 @@ if __name__ == "__main__":
                 break
     parser = Auto24Parser(input_car_make, input_page_amount)
     parser.parse()
-    for i in parser.get_cars():
-        print(i)
-        print()
-    print(len(parser.get_cars()))
+    for car in parser.get_cars():
+        car_info = CarInfo(**car)
+        session.add(car_info)
+    session.commit()
+    session.close()
+    # for i in parser.get_cars():
+    #     print(i)
+    #     print()
+    # print(len(parser.get_cars()))
     parser.close()
