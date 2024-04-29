@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <h3>Best sales:</h2>
+    <ul>
+        {% for car in best_sales %}
+            <li>{{ car }}</li>
+        {% endfor %}
+    </ul>
+    <h3>List of cars:</h2>
+    <ul>
+        {% for car in car_list %}
+            <li>{{ car }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

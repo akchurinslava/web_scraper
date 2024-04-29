@@ -30,5 +30,5 @@ class CarInfo(Base):
     bargain_price = Column(Integer)
     export_price = Column(Integer)
     vat = Column(Integer, index=True)
-    link = Column(String, unique=True)
+    link = Column(String)
     created_at = Column(DateTime(timezone=True), default=datetime.datetime.now)

@@ -1,4 +1,3 @@
-import datetime
 import os
 import re
 
@@ -58,10 +57,6 @@ class Auto24Parser:
         As you can see finally we store it in list.
         """
         page_count = 0
-        # if self.input_car_make == "all":
-        #     base_url = (
-        #         f'https://eng.auto24.ee/kasutatud/nimekiri.php?bn=2&a={types.get('passenger_suv')}&af={page_count}'
-        #     )
         while True:
             base_url = f'https://eng.auto24.ee/kasutatud/nimekiri.php?bn=2&a={types.get('passenger_suv')}&b={makes.get(self.input_car_make)}&af=20&ak={page_count}'
             self.driver.get(base_url)
@@ -72,7 +67,6 @@ class Auto24Parser:
                     listings = div.find_all("a", class_="row-link", href=lambda href: href and '/vehicles/' in href)
                     for listing in listings:
                         car_url = f'https://eng.auto24.ee{listing["href"]}'
-                        # car_url = 'https://eng.auto24.ee/soidukid/4019764'
                         self.cars_links.append(car_url)
                         self.driver.get(car_url)
                         soup_car = BeautifulSoup(self.driver.page_source, "lxml")
@@ -80,7 +74,9 @@ class Auto24Parser:
                         self.car_info = {}
                         self.driver.get(car_url)
                         h1 = soup_car.find("h1", class_="commonSubtitle").text.split()
-                        self.car_info['make'], self.car_info['model'], self.car_info['spec_name'] = h1[0], h1[1], ' '.join(h1[2:])
+                        self.car_info['spec_name'] = ' '.join(h1)
+                        breadcrumb_items = soup_car.find("div", class_="b-breadcrumbs").find_all("a", class_="b-breadcrumbs__item")
+                        self.car_info['make'], self.car_info['model'] = breadcrumb_items[1].text.strip(), breadcrumb_items[2].text.strip()
                         for tr in table.find_all("tr"):
                             td_field = tr.find("td", class_="field")
                             span_value = td_field.find("span", class_="value")
@@ -106,10 +102,6 @@ class Auto24Parser:
                         self.car_info['vat'] = vat_value
                         self.car_info['link'] = car_url
                         self.cars_list.append(self.car_info)
-                        # print(len(self.cars_list))
-                        # print(car_url)
-                        # print(base_url)
-                        # print(self.cars_list)
                 except Exception as e:
                     print(f'An exception occured during application was running:\n{e}')
             else:
@@ -132,9 +124,9 @@ class Auto24Parser:
 
 if __name__ == "__main__":
     while True:
-        input_car_make = input("Введите марку машины: ")
+        input_car_make = input("Make of car: ")
         if input_car_make in makes:
-            input_page_amount = input("Сколько страниц сканировать: ")
+            input_page_amount = input("Number of pages: ")
             try:
                 input_page_amount = int(input_page_amount) * 100
                 break
@@ -148,8 +140,4 @@ if __name__ == "__main__":
         session.add(car_info)
     session.commit()
     session.close()
-    # for i in parser.get_cars():
-    #     print(i)
-    #     print()
-    # print(len(parser.get_cars()))
     parser.close()
