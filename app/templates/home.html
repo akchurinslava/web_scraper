@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+ <title>Dashboard</title>
+ <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
 </head>
-<body>
-    <h1>Cars Analytics Dashboard</h1>
-    <form action="/" method="post">
-        <label for="cycle">Please enter type of period (hours/days/weeks etc):</label><br>
-        <input type="text" id="cycle" name="cycle"><br>
-        <label for="period">Please enter number for time period:</label><br>
-        <input type="text" id="period" name="period"><br><br>
+    <body>
+        <h1>Cars Analytics Dashboard</h1>
+        <form action="/" method="post">
+            <label for="cycle">Please choose type of period (hours/days/weeks/months/years):</label>
+            <select id="cycle" name="cycle">
+                <option value="hours">Hours</option>
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+            <label for="period">Please enter number for time period:</label>
+            <input type="text" id="period" name="period">
         <button type="submit">GO!</button>
     </form>
-</body>
+    </body>
 </html>

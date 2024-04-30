@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from fastapi import FastAPI, Request
@@ -25,7 +26,7 @@ async def home_post(request: Request):
 
 
 def run_analytics(cycle: str, period: int):
-    result = subprocess.run(["python", "/Users/my_pc/Documents/github/auto_24_parser/analytics.py", cycle, str(period)], capture_output=True, text=True)
+    result = subprocess.run(["python", os.getenv("ANALYTICS_LOCATION"), cycle, str(period)], capture_output=True, text=True)
     best_sales = []
     car_list = []
     current_list = None
