@@ -15,7 +15,11 @@ from makes import makes, types
 class Auto24Parser:
     def __init__(self, input_car_make: str, input_page_amount: str):
         """
-        Our initialize method, here we define class attributes and set some ChromeDriver options
+        Initialize method, here we define class attributes and set some ChromeDriver options.
+        :param input_car_make: str
+            Input field for vehicle make.
+        :param input_page_amount: str
+            Input field for number of pages, we redefine like int when script running.
         """
         load_dotenv()
         self.service = Service(
@@ -49,7 +53,7 @@ class Auto24Parser:
             'field-eksporthind': 'export_price',
         }
 
-    def parse(self) -> list:
+    def parse(self):
         """
         Our main method, here we work with auto24 pages and cars.
         Here we define and ran Selenium for ChromeDriver work and ran Chrome Browser.
@@ -115,7 +119,12 @@ class Auto24Parser:
                 if input_page_amount == page_count:
                     break
 
-    def get_cars(self):
+    def get_cars(self) -> list:
+        """
+        Return method.
+        :return: list
+            Each object in list is dict, in each dict we store information about each car key-value.
+        """
         return self.cars_list
 
     def close(self):
@@ -135,6 +144,8 @@ if __name__ == "__main__":
                 break
     parser = Auto24Parser(input_car_make, input_page_amount)
     parser.parse()
+    # In the loop below we iterate through cycle, after loop will finshed
+    # each car will commit and push to DB.
     for car in parser.get_cars():
         car_info = CarInfo(**car)
         session.add(car_info)

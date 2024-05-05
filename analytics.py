@@ -9,7 +9,16 @@ from app.models import CarInfo
 
 
 class CarsAnalytics:
-    def __init__(self, input_cycle, input_cycle_period):
+    def __init__(self, input_cycle: str, input_cycle_period: int):
+        """
+        Initalize method here is defined some variables with specific data types.
+        Realized mapping for relativedata lib
+        :param cycle: str
+            Select field with period of analytic, can be hours, days, weeks etc
+            related on relativedelta lib.
+        :param period: int
+            Input field with number of for time period, must be number.
+        """
         self.grouped_cars = defaultdict(list)
         self.sold_cars = defaultdict(int)
         self.sorted_sold_cars = []
@@ -25,7 +34,11 @@ class CarsAnalytics:
         }
 
     def cars_analyze(self):
-
+        """
+        Main script for analytics, here we run relativedelta with unpacked key-values of input_cycle_map(dict),
+        executed DB query, for defined period and run loops which compare first and last day of period.
+        As you can see at the end we get tuple of lists.
+        """
         start_date = datetime.now() - relativedelta(**{self.input_cycle_map[self.cycle]: self.cycle_input})
 
         all_cars_from_db = session.query(CarInfo).filter(CarInfo.created_at >= start_date).all()
@@ -49,8 +62,13 @@ class CarsAnalytics:
         self.sorted_sold_cars = sorted(self.sold_cars.items(), key=lambda x: x[1], reverse=True)
         self.sorted_list_cars = sorted(self.list_cars, key=lambda x: x[2], reverse=True)
 
-    def get_stats(self):
-        return self.sorted_sold_cars
+    def get_stats(self) -> tuple:
+        """
+        Return method.
+        :return: tuple
+            Tuple of best sales and list of all saled vehicles.
+        """
+        return self.sorted_sold_cars, self.sorted_list_cars
 
 
 if __name__ == "__main__":
@@ -58,10 +76,11 @@ if __name__ == "__main__":
     period = sys.argv[2]
     statistics = CarsAnalytics(cycle, int(period))
     statistics.cars_analyze()
+    best_sales, list_cars = statistics.get_stats()
     print("Best sales:")
-    for (make, model), count in statistics.get_stats():
+    for (make, model), count in best_sales:
         print(f"{make} {model}: {count} sales")
     print("List of cars:")
-    for (make, model, price) in statistics.sorted_list_cars:
+    for (make, model, price) in list_cars:
         print(f"{make} {model}: {price}€")
 

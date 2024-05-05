@@ -1,5 +1,5 @@
-# In this file we defined some const like makes of cars, types of vehicles and count ads on the page
-# Comments help us navigate for keys inside URL
+# In this file we defined some const like makes of cars, types of vehicles and count ads on the page.
+# Comments help us navigate for keys inside URL.
 
 # b
 makes = {

@@ -34,5 +34,24 @@ class CarInfoView(ModelView, model=models.CarInfo):
         'link',
         'created_at',
         ]
+    
+
+class CarMakeView(ModelView, model=models.CarMake):
+    column_list = [
+        'id',
+        'make_name',
+        'code',
+    ]
+
+
+class CarTypeView(ModelView, model=models.CarType):
+    column_list = [
+        'id',
+        'type_name',
+        'code',
+    ]
+
 
 admin.add_view(CarInfoView)
+admin.add_view(CarMakeView)
+admin.add_view(CarTypeView)

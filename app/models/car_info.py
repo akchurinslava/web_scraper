@@ -6,6 +6,9 @@ from app.database import Base
 
 
 class CarInfo(Base):
+    """
+    Our main model, here we defined information about each vehicle.
+    """
     __tablename__ = "car_info"
 
     id = Column(Integer, primary_key=True)
@@ -14,7 +17,6 @@ class CarInfo(Base):
     spec_name = Column(String)
     type = Column(String, index=True)
     body_type = Column(String, index=True)
-    # Research
     reg = Column(String)
     engine = Column(String)
     fuel = Column(String, index=True)
