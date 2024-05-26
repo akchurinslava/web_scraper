@@ -55,9 +55,9 @@ class CarsAnalytics:
 
         for car_link in first_day_cars:
             if car_link not in last_day_cars:
-                first_day_car = next(car for car in self.grouped_cars[first_date] if car.link == car_link)
-                self.sold_cars[(first_day_car.make, first_day_car.model)] += 1
-                self.list_cars.append((first_day_car.make, first_day_car.model, first_day_car.price))
+                sold_car = next(car for car in self.grouped_cars[first_date] if car.link == car_link)
+                self.sold_cars[(sold_car.make, sold_car.model)] += 1
+                self.list_cars.append((sold_car.make, sold_car.model, sold_car.price))
 
         self.sorted_sold_cars = sorted(self.sold_cars.items(), key=lambda x: x[1], reverse=True)
         self.sorted_list_cars = sorted(self.list_cars, key=lambda x: x[2], reverse=True)

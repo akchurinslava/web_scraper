@@ -86,7 +86,7 @@ class Auto24Parser:
                             span_value = td_field.find("span", class_="value")
                             tr_class = tr.attrs.get("class")[0]
                             if span_value == None:
-                                self.car_info[self.mapping[tr_class]] = ''
+                                self.car_info[self.mapping[tr_class]] = None
                             else:
                                 if tr_class in ['field-labisoit']:
                                     clean_mileage = span_value.text
