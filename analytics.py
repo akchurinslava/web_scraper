@@ -11,10 +11,10 @@ from app.models import CarInfo
 class CarsAnalytics:
     def __init__(self, input_cycle: str, input_cycle_period: int):
         """
-        Initalize method here is defined some variables with specific data types.
-        Realized mapping for relativedata lib
+        Initalize method. Here is defined some variables with specific data types.
+        Realized mapping for relativedata lib.
         :param cycle: str
-            Select field with period of analytic, can be hours, days, weeks etc
+            Select field with period of analytics. Can be hours, days, weeks etc
             related on relativedelta lib.
         :param period: int
             Input field with number of for time period, must be number.

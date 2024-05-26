@@ -56,9 +56,9 @@ class Auto24Parser:
     def parse(self):
         """
         Our main method, here we work with auto24 pages and cars.
-        Here we define and ran Selenium for ChromeDriver work and ran Chrome Browser.
-        Here we define and ran BeautifulSoup for parsing data from web pages.
-        As you can see finally we store it in list.
+        Here we define and run Selenium for ChromeDriver work and run Chrome Browser.
+        Here we define and run BeautifulSoup for parsing data from web pages.
+        As you can see finally we store it in the list.
         """
         page_count = 0
         while True:

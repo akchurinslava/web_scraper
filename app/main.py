@@ -16,7 +16,7 @@ async def home(request: Request) -> None:
     """
     Home page.
     :param request: Request
-        type of HTTP-request param
+        Type of HTTP-request param.
     """
     return templates.TemplateResponse("home.html", {"request": request})
 
@@ -27,7 +27,7 @@ async def home_post(request: Request) -> None:
     Defined post form on the home page.
     With post form we run run_analytics().
     :param request: Request
-        Type of HTTP-request param
+        Type of HTTP-request param.
     """
     form_data = await request.form()
     cycle = form_data.get("cycle")
@@ -38,13 +38,13 @@ async def home_post(request: Request) -> None:
 
 def run_analytics(cycle: str, period: int) -> list:
     """
-    Function that with subprocces run the ./analytics.py script, which send us
+    Function with subprocces run the ./analytics.py script which send us
     analytic results in response.
     :param cycle: str
-        Select field with period of analytic, can be hours, days, weeks etc
+        Select field with period of analytics. Can be hours, days, weeks etc
         related on relativedelta lib.
     :param period: int
-        Input field with number of for time period, must be number.
+        Input field with number for time period, must be number.
     :return car_list: list
         List of all saled vehicles.
     :return best_sales: list
