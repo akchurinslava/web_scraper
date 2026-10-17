@@ -1,0 +1,2 @@
+class BaseTask:
+    pass

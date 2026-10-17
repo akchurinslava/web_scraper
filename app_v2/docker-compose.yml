@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: auto-scraper
+    build: .
+    env_file:
+      - ./.env
+    volumes:
+      - .:/backend
+    entrypoint: "./entrypoint.sh"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres
+    container_name: postgres-db
+    env_file:
+      - ./.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  rq:
+    container_name: rq-worker
+    build: .
+    command: rq worker
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+
+volumes:
+  pgdata:

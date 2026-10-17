@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "auto-scraper"
+version = "0.1.0"
+description = ""
+authors = ["Kirill Fedorov <k.a.fedorov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.112.1"
+SQLAlchemy = "^2.0.32"
+asyncpg = "^0.29.0"
+redis = "^5.0.8"
+alembic = "^1.13.2"
+rq = "^1.16.2"
+pydantic-settings = "^2.4.0"
+selectolax = "^0.3.21"
+
+[tool.ruff]
+exclude = [
+    "alembic",
+    "migrations",
+    "__init__.py",
+]
+line-length = 119
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
